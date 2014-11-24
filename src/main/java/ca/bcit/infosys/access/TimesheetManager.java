@@ -1,7 +1,6 @@
 package ca.bcit.infosys.access;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,8 +11,15 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 
 import ca.bcit.infosys.timesheet.Timesheet;
 import ca.bcit.infosys.timesheet.TimesheetRow;
@@ -22,7 +28,8 @@ import ca.bcit.infosys.timesheet.TimesheetRow;
  * @author Huanan
  *
  */
-
+@Path("/timesheet")
+@Stateless
 public class TimesheetManager implements java.io.Serializable {
 	/** dataSource for connection pool on JBoss AS 7 or higher. */
 	@Resource(mappedName = "java:jboss/datasources/TIMESHEET")
@@ -54,6 +61,8 @@ public class TimesheetManager implements java.io.Serializable {
 	 * @param Timesheet
 	 *            timesheet
 	 */
+	@POST
+	@Consumes("application/xml")
 	public void add(Timesheet timesheet) {
 
 		Connection connection = null;
@@ -114,6 +123,8 @@ public class TimesheetManager implements java.io.Serializable {
 	 * @param Timesheet
 	 *            timesheet
 	 */
+	@PUT
+	@Consumes("application/xml")
 	public void update(Timesheet timesheet) {
 
 		Connection connection = null;
@@ -149,6 +160,8 @@ public class TimesheetManager implements java.io.Serializable {
 	/**
 	 * @return List<Timesheet> timesheetList
 	 */
+	@GET
+	@Produces("application/xml")
 	@SuppressWarnings("unchecked")
 	public List<Timesheet> getTimesheets(final int empId) {
 		ArrayList<Timesheet> timesheetList = new ArrayList<Timesheet>();

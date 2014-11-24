@@ -7,6 +7,9 @@ import java.util.GregorianCalendar;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import ca.bcit.infosys.employee.Employee;
 
 /**
@@ -14,6 +17,8 @@ import ca.bcit.infosys.employee.Employee;
  *
  * @author Bruce Link
  */
+
+@XmlRootElement(name = "timesheet")
 public class Timesheet implements java.io.Serializable,Comparable {
     /** Serial version number. */
     private static final long serialVersionUID = 2L;
@@ -92,6 +97,7 @@ public class Timesheet implements java.io.Serializable,Comparable {
     /**
      * @return the endWeek
      */
+    @XmlElement(name = "endWeek")
     public Date getEndWeek() {
         return endWeek;
     }
@@ -117,6 +123,7 @@ public class Timesheet implements java.io.Serializable,Comparable {
     /**
      * @return the weeknumber of the timesheet
      */
+    @XmlElement(name = "weekNumber")
     public int getWeekNumber() {
         Calendar c = new GregorianCalendar();
         c.setTime(endWeek);
@@ -142,6 +149,7 @@ public class Timesheet implements java.io.Serializable,Comparable {
     /**
      * @return the endWeek as string
      */
+    @XmlElement(name = "weekEnding")
     public String getWeekEnding() {
         Calendar c = new GregorianCalendar();
         c.setTime(endWeek);
@@ -155,6 +163,7 @@ public class Timesheet implements java.io.Serializable,Comparable {
     /**
      * @return the details
      */
+    @XmlElement(name = "details")
     public List<TimesheetRow> getDetails() {
         return details;
     }
@@ -201,6 +210,7 @@ public class Timesheet implements java.io.Serializable,Comparable {
      *
      * @return total hours for timesheet.
      */
+    @XmlElement(name = "totalHours")
     public BigDecimal getTotalHours() {
         BigDecimal sum = BigDecimal.ZERO;
         for (TimesheetRow row : details) {
@@ -214,6 +224,7 @@ public class Timesheet implements java.io.Serializable,Comparable {
      *
      * @return array of total hours for each day of week for timesheet.
      */
+    @XmlElement(name = "dailyHours")
     public BigDecimal[] getDailyHours() {
         BigDecimal[] sums = new BigDecimal[DAYS_IN_WEEK];
         for (TimesheetRow day : details) {
