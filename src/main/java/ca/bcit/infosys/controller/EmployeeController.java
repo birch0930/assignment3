@@ -132,9 +132,8 @@ public class EmployeeController implements Serializable {
 	 * Delete the employee
 	 * @param emp
 	 */
-	public void deleteEmp(Employee emp) {
-		if (emp != null)
-			empManager.deleteEmpoyee(emp);
+	public void deleteEmp(int id) {
+		empManager.deleteEmpoyee(id);
 		getEmployees();
 	}
 
@@ -144,7 +143,7 @@ public class EmployeeController implements Serializable {
 	 */
 	public String newEmployee() {
 		if (employee != null)
-			newEmp = new Employee(employee.getName(),employee.getEmpNumber(),employee.getUserName(), 1);
+			newEmp = new Employee(employee.getFirstName(), employee.getLastName(),employee.getEmpNumber(),employee.getUserName(), 1);
 		//System.out.println(newEmp.getName());
 		empManager.addEmployee(newEmp);
 		empList.add(newEmp);
@@ -230,7 +229,7 @@ public class EmployeeController implements Serializable {
 	 * @return
 	 */
 	public String changePassword(String newPassword) {
-		empManager.changePass(editEmp, newPassword);
+		empManager.changePass(editEmp, newPassword, newPassword);
 		return "superShowUser";
 	}
 		

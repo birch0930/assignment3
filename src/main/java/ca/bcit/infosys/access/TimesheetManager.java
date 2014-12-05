@@ -1,5 +1,6 @@
 package ca.bcit.infosys.access;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 import javax.ws.rs.Consumes;
@@ -19,6 +21,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import ca.bcit.infosys.timesheet.Timesheet;
@@ -28,7 +31,8 @@ import ca.bcit.infosys.timesheet.TimesheetRow;
  * @author Huanan
  *
  */
-@Path("/timesheet")
+@Path("/employee/{id}/timesheet")
+
 @Stateless
 public class TimesheetManager implements java.io.Serializable {
 	/** dataSource for connection pool on JBoss AS 7 or higher. */
@@ -84,23 +88,44 @@ public class TimesheetManager implements java.io.Serializable {
 						stmt.setInt(PROJECT_ID, timesheetRow.getProjectID());
 						stmt.setString(WP, timesheetRow.getWorkPackage());
 						stmt.setBigDecimal(TOTAL, timesheetRow.getSum());
-						stmt.setBigDecimal(SAT,
-								timesheetRow.getHoursForWeek()[0]);
-						stmt.setBigDecimal(SUN,
-								timesheetRow.getHoursForWeek()[1]);
-						stmt.setBigDecimal(MON,
-								timesheetRow.getHoursForWeek()[2]);
-						stmt.setBigDecimal(TUE,
-								timesheetRow.getHoursForWeek()[3]);
-						stmt.setBigDecimal(WED,
-								timesheetRow.getHoursForWeek()[4]);
-						stmt.setBigDecimal(THU,
-								timesheetRow.getHoursForWeek()[5]);
-						stmt.setBigDecimal(FRI,
-								timesheetRow.getHoursForWeek()[6]);
+						if (timesheetRow.getHoursForWeek()[0] != null)
+							stmt.setBigDecimal(SAT,
+									timesheetRow.getHoursForWeek()[0]);
+						else
+							stmt.setBigDecimal(SAT, new BigDecimal(0));
+
+						if (timesheetRow.getHoursForWeek()[1] != null)
+							stmt.setBigDecimal(SUN,
+									timesheetRow.getHoursForWeek()[1]);
+						else
+							stmt.setBigDecimal(SUN, new BigDecimal(0));
+						if (timesheetRow.getHoursForWeek()[2] != null)
+							stmt.setBigDecimal(MON,
+									timesheetRow.getHoursForWeek()[2]);
+						else
+							stmt.setBigDecimal(MON, new BigDecimal(0));
+						if (timesheetRow.getHoursForWeek()[3] != null)
+							stmt.setBigDecimal(TUE,
+									timesheetRow.getHoursForWeek()[3]);
+						else
+							stmt.setBigDecimal(TUE, new BigDecimal(0));
+						if (timesheetRow.getHoursForWeek()[4] != null)
+							stmt.setBigDecimal(WED,
+									timesheetRow.getHoursForWeek()[4]);
+						else
+							stmt.setBigDecimal(WED, new BigDecimal(0));
+						if (timesheetRow.getHoursForWeek()[5] != null)
+							stmt.setBigDecimal(THU,
+									timesheetRow.getHoursForWeek()[5]);
+						else
+							stmt.setBigDecimal(THU, new BigDecimal(0));
+						if (timesheetRow.getHoursForWeek()[6] != null)
+							stmt.setBigDecimal(FRI,
+									timesheetRow.getHoursForWeek()[6]);
+						else
+							stmt.setBigDecimal(FRI, new BigDecimal(0));
 						stmt.setString(NOTES, timesheetRow.getNotes());
-						// stmt.setDate(ENDWEEK, new
-						// Date(timesheet.getEndWeek().getTime()));
+
 						stmt.executeUpdate();
 					} finally {
 						if (stmt != null) {
@@ -154,7 +179,7 @@ public class TimesheetManager implements java.io.Serializable {
 			System.out.println("Error in persist " + timesheet);
 			ex.printStackTrace();
 		}
-		
+
 	}
 
 	/**
@@ -163,7 +188,8 @@ public class TimesheetManager implements java.io.Serializable {
 	@GET
 	@Produces("application/xml")
 	@SuppressWarnings("unchecked")
-	public List<Timesheet> getTimesheets(final int empId) {
+	public List<Timesheet> getTimesheets(final @PathParam("id") int empId) {
+		System.out.println("in");
 		ArrayList<Timesheet> timesheetList = new ArrayList<Timesheet>();
 		int i = 0;
 		Connection connection = null;

@@ -2,12 +2,15 @@ package ca.bcit.infosys.timesheet;
 
 import java.math.BigDecimal;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * A class representing a single row of a Timesheet.
  *
  * @author Bruce Link
  */
-
+@XmlRootElement
 public class TimesheetRow implements java.io.Serializable {
 
     /** Version number. */
@@ -71,6 +74,7 @@ public class TimesheetRow implements java.io.Serializable {
     /**
      * @return the projectID
      */
+    @XmlElement(name = "ProjectID")
     public Integer getProjectID() {
         return projectID;
     }
@@ -85,6 +89,7 @@ public class TimesheetRow implements java.io.Serializable {
     /**
      * @return the workPackage
      */
+	 @XmlElement(name = "wp")
     public String getWorkPackage() {
         return workPackage;
     }
@@ -92,6 +97,7 @@ public class TimesheetRow implements java.io.Serializable {
     /**
      * @param wp the workPackage to set
      */
+   
     public void setWorkPackage(final String wp) {
         this.workPackage = wp;
     }
@@ -115,6 +121,7 @@ public class TimesheetRow implements java.io.Serializable {
      * @param day The day of week to return charges for
      * @return charges in hours of specific day in week
      */
+
     public BigDecimal getHour(final int day) {
         return hoursForWeek[day];
     }
@@ -180,6 +187,7 @@ public class TimesheetRow implements java.io.Serializable {
     /**
      * @return the notes
      */
+    @XmlElement(name = "notes")
     public String getNotes() {
         return notes;
     }
@@ -194,6 +202,7 @@ public class TimesheetRow implements java.io.Serializable {
     /**
      * @return the weekly hours
      */
+    @XmlElement(name = "sum")
     public BigDecimal getSum() {
         sum = BigDecimal.ZERO;
         for (BigDecimal next : hoursForWeek) {

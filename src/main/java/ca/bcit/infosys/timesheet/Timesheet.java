@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 import ca.bcit.infosys.employee.Employee;
 
@@ -19,6 +20,7 @@ import ca.bcit.infosys.employee.Employee;
  */
 
 @XmlRootElement(name = "timesheet")
+@XmlSeeAlso(TimesheetRow.class)
 public class Timesheet implements java.io.Serializable,Comparable {
     /** Serial version number. */
     private static final long serialVersionUID = 2L;
@@ -90,6 +92,7 @@ public class Timesheet implements java.io.Serializable,Comparable {
     /**
      * @return the employee.
      */
+   
     public Employee getEmployee() {
         return employee;
     }
@@ -97,7 +100,7 @@ public class Timesheet implements java.io.Serializable,Comparable {
     /**
      * @return the endWeek
      */
-    @XmlElement(name = "endWeek")
+
     public Date getEndWeek() {
         return endWeek;
     }
@@ -163,7 +166,7 @@ public class Timesheet implements java.io.Serializable,Comparable {
     /**
      * @return the details
      */
-    @XmlElement(name = "details")
+    @XmlElement(name = "timesheetRow")
     public List<TimesheetRow> getDetails() {
         return details;
     }
